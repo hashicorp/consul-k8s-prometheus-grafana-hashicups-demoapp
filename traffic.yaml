@@ -1,0 +1,70 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: k6-configmap
+data:
+  k6: |
+    import http from "k6/http";
+
+    export let options = {
+      vus: 3,
+      stages: [
+          { duration: "1m", target: 10 },
+          { duration: "1m", target: 7 },
+          { duration: "1m", target: 5 },
+          { duration: "1m", target: 13 },
+          { duration: "1m", target: 4 },
+      ]
+    };
+
+    export default function() {
+        let response = http.get(__ENV.BASE_URI);
+    };
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traffic
+  labels:
+    app: traffic
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: traffic
+  template:
+    metadata:
+      labels:
+        app: traffic
+      annotations:
+        consul.hashicorp.com/connect-inject: "true"
+        consul.hashicorp.com/connect-service-upstreams: "frontend:80"
+    spec:
+      volumes:
+      - name: k6
+        configMap:
+          name: k6-configmap
+          items:
+          - key: k6
+            path: script.js
+      containers:
+      - name: load-test
+        image: loadimpact/k6
+        volumeMounts:
+          - name: k6
+            mountPath: /k6
+            readOnly: true
+        command:
+          - k6
+          - run
+          - k6/script.js
+        env:
+        - name: BASE_URI
+          value: http://127.0.0.1:80
+        - name: DURATION
+          value: "60"
+        - name: SHOW_PROGRESS
+          value: "false"
