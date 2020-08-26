@@ -15,15 +15,12 @@ spec:
       targetPort: 9090
 
 ---
-# Service account to allow pod access to Vault via K8s auth
 
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: products-api
 automountServiceAccountToken: true
-
----
 
 ---
 apiVersion: v1

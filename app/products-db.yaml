@@ -14,6 +14,14 @@ spec:
     app: postgres
 
 ---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: postgres
+automountServiceAccountToken: true
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -34,6 +42,7 @@ spec:
         prometheus.io/port: "9102"
         consul.hashicorp.com/connect-inject: "true"
     spec:
+      serviceAccountName: postgres
       containers:
         - name: postgres
           image: hashicorpdemoapp/product-api-db:v0.0.11
