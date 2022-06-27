@@ -13,4 +13,6 @@ To fully deploy the app run the following scripts in order. Assumes you have a K
 
 To simulate a load on the applicaton, run:
 
-`kubectl apply -f traffic.yaml`
+```
+kubectl apply -f traffic.yaml
+```
