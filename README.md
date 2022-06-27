@@ -1,5 +1,5 @@
-# consul-k8s-prometheus-grafana-hashicups-demoapp
-This repo contains application and dashboard definitions for the Consul Layer 7 observability with Kubernetes guide located at learn.hashicorp.com
+# Learn Layer 7 Observability with Prometheus, Grafana, and Kubernetes
+This repo contains application and dashboard definitions for the [Consul Layer 7 observability with Kubernetes guide located at learn.hashicorp.com](https://learn.hashicorp.com/tutorials/consul/kubernetes-layer7-observability)
 
 To fully deploy the app run the following scripts in order. Assumes you have a Kubernetes cluster available.  Tested with Minikube and Kind.
 
@@ -11,4 +11,8 @@ To fully deploy the app run the following scripts in order. Assumes you have a K
 
 `kubectl apply -f app`
 
-To simulate a load on the applicaton, run `kubectl apply -f traffic.yaml`.
+To simulate a load on the applicaton, run:
+
+```
+kubectl apply -f traffic.yaml
+```
